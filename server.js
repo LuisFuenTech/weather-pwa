@@ -21,7 +21,11 @@
 const express = require("express");
 const fetch = require("node-fetch");
 const redirectToHTTPS = require("express-http-to-https").redirectToHTTPS;
-require("dotenv").config();
+
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 
 // CODELAB: Change this to add a delay (ms) before the server responds.
 const FORECAST_DELAY = 3;
