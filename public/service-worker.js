@@ -18,8 +18,8 @@
 "use strict";
 
 // CODELAB: Update cache names any time any of the cached files change.
-const CACHE_NAME = "static-cache-v3";
-const DATA_CACHE_NAME = "data-cache-v2";
+const CACHE_NAME = `static-cache-v3`;
+const DATA_CACHE_NAME = `data-cache-v3`;
 
 // CODELAB: Add list of files to cache here.
 const FILES_TO_CACHE = [
@@ -44,7 +44,8 @@ const FILES_TO_CACHE = [
   "/images/snow.svg",
   "/images/thunderstorm.svg",
   "/images/tornado.svg",
-  "/images/wind.svg"
+  "/images/wind.svg",
+  "/offline.html"
 ];
 
 self.addEventListener("install", evt => {
@@ -86,6 +87,7 @@ self.addEventListener("fetch", evt => {
   // CODELAB: Add fetch event handler here.
   if (evt.request.url.includes("/forecast/")) {
     console.log("[Service Worker] Fetch (data)", evt.request.url);
+
     evt.respondWith(
       caches.open(DATA_CACHE_NAME).then(cache => {
         return fetch(evt.request)

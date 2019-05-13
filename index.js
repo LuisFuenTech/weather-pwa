@@ -20,12 +20,12 @@
 
 const express = require("express");
 const fetch = require("node-fetch");
+const axios = require("axios");
 const redirectToHTTPS = require("express-http-to-https").redirectToHTTPS;
 
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
-
 
 // CODELAB: Change this to add a delay (ms) before the server responds.
 const FORECAST_DELAY = 3;
@@ -142,21 +142,21 @@ function generateFakeForecast(location) {
  * @param {Request} req request object from Express.
  * @param {Response} resp response object from Express.
  */
-function getForecast(req, resp) {
+
+function getForecast(req, res) {
   const location = req.params.location || "40.7720232,-73.9732319";
   const url = `${BASE_URL}/${API_KEY}/${location}`;
-  fetch(url)
-    .then(resp => {
-      return resp.json();
-    })
-    .then(data => {
+
+  axios
+    .get(url)
+    .then(({ data }) => {
       setTimeout(() => {
-        resp.json(data);
+        res.json(data);
       }, FORECAST_DELAY);
     })
     .catch(err => {
-      console.error("1 Dark Sky API Error:", err.message);
-      resp.json(generateFakeForecast(location));
+      console.error("Dark Sky API Error:", err.message);
+      res.json(generateFakeForecast(location));
     });
 }
 
